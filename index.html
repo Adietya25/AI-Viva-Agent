@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Viva Preparation Bot</title>
+    <meta name="description" content="Frontend-only viva preparation platform for engineering students." />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <button id="floatingChatButton" class="floating-chat-button" aria-label="Open chatbot">💬</button>
+
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">VP</div>
+          <div>
+            <h1>Viva Bot</h1>
+            <small>Preparation Platform</small>
+          </div>
+        </div>
+
+        <nav class="navigation" aria-label="Main navigation">
+          <button class="nav-item active" data-section="dashboardSection">Dashboard</button>
+          <button class="nav-item" data-section="browseSection">Question Bank</button>
+          <button class="nav-item" data-section="chatSection">Ask Bot</button>
+          <button class="nav-item" data-section="projectSection">Project Viva</button>
+          <button class="nav-item" data-section="practicalSection">Practical Viva</button>
+          <button class="nav-item" data-section="rapidSection">Rapid Fire</button>
+          <button class="nav-item" data-section="mockSection">Mock Viva</button>
+          <button class="nav-item" data-section="quizSection">Quiz</button>
+          <button class="nav-item" data-section="bookmarksSection">My Bookmarks</button>
+        </nav>
+
+        <div class="subject-panel">
+          <div class="panel-heading">
+            <h3>Quick Subjects</h3>
+          </div>
+          <div id="subjectQuickButtons" class="quick-subjects"></div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="search-box">
+            <span class="search-icon">⌕</span>
+            <input id="globalSearchInput" type="search" placeholder="Search for polymorphism, DBMS, TCP, AI..." aria-label="Search questions" />
+          </div>
+          <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">☀️ Light</button>
+        </header>
+
+        <section id="dashboardSection" class="panel active-panel">
+          <div class="page-header">
+            <div>
+              <p class="eyebrow">Your study dashboard</p>
+              <h2>Viva Preparation Bot</h2>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <article class="stat-card accent-blue">
+              <span class="stat-label">Subjects</span>
+              <strong id="subjectCount">0</strong>
+            </article>
+            <article class="stat-card accent-green">
+              <span class="stat-label">Questions</span>
+              <strong id="questionCount">0</strong>
+            </article>
+            <article class="stat-card accent-violet">
+              <span class="stat-label">Attempted</span>
+              <strong id="attemptedCount">0</strong>
+            </article>
+            <article class="stat-card accent-orange">
+              <span class="stat-label">Mock Score</span>
+              <strong id="mockScoreSummary">0%</strong>
+            </article>
+          </div>
+
+          <div class="action-row">
+            <button class="primary-btn" data-section="browseSection">Browse Questions</button>
+            <button class="secondary-btn" data-section="chatSection">Ask the Bot</button>
+            <button class="secondary-btn" data-section="rapidSection">Rapid Fire</button>
+            <button class="secondary-btn" data-section="mockSection">Mock Viva</button>
+            <button class="secondary-btn" data-section="quizSection">Take Quiz</button>
+          </div>
+
+          <div class="dashboard-subjects-wrap">
+            <div class="panel-heading inline-heading">
+              <h3>Subjects</h3>
+              <span id="subjectCaption">0 topics covered</span>
+            </div>
+            <div id="dashboardSubjects" class="dashboard-subjects"></div>
+          </div>
+        </section>
+
+        <section id="browseSection" class="panel">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Question bank</p>
+              <h3>Browse & revise</h3>
+            </div>
+          </div>
+
+          <div class="filter-row">
+            <label>
+              Subject
+              <select id="subjectFilter"></select>
+            </label>
+            <label>
+              Difficulty
+              <select id="difficultyFilter">
+                <option value="all">All Levels</option>
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+              </select>
+            </label>
+            <label>
+              Type
+              <select id="typeFilter">
+                <option value="all">All Types</option>
+              </select>
+            </label>
+          </div>
+
+          <div id="questionList" class="question-list"></div>
+        </section>
+
+        <section id="chatSection" class="panel">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Chatbot mode</p>
+              <h3>Ask your viva question</h3>
+            </div>
+          </div>
+
+          <div id="chatMessages" class="chat-box" aria-live="polite">
+            <div class="chat-message bot">
+              <strong>Bot:</strong>
+              <p>Hello! Ask me about DSA, Java, DBMS, OS, networking, AI, project viva, or any core engineering concept.</p>
+            </div>
+          </div>
+
+          <form id="chatForm" class="chat-form">
+            <input id="chatInput" type="text" placeholder="Example: What is polymorphism?" aria-label="Ask a question" />
+            <button type="submit" class="primary-btn">Ask</button>
+          </form>
+        </section>
+
+        <section id="projectSection" class="panel">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Project viva</p>
+              <h3>Prepare for your project defense</h3>
+            </div>
+          </div>
+
+          <form id="projectForm" class="project-form">
+            <div class="form-grid">
+              <label>Project Name<input name="projectName" type="text" value="Smart Attendance System" /></label>
+              <label>Problem Statement<textarea name="problemStatement" rows="2">Manual attendance is time-consuming and error-prone, especially in large classrooms and organizations.</textarea></label>
+              <label>Objective<textarea name="objective" rows="2">To automate attendance tracking using digital methods and reduce mistakes.</textarea></label>
+              <label>Technologies<input name="technologies" type="text" value="Python, OpenCV, Flask, SQLite" /></label>
+              <label>Modules<input name="modules" type="text" value="Authentication, Face detection, Attendance logging, Dashboard" /></label>
+              <label>Hardware<input name="hardware" type="text" value="Webcam, Local server machine" /></label>
+              <label>Software<input name="software" type="text" value="Python, Flask, OpenCV, SQLite" /></label>
+              <label>Methodology<input name="methodology" type="text" value="Requirement analysis, system design, implementation, testing, deployment" /></label>
+              <label>Dataset<input name="dataset" type="text" value="Student images and attendance records" /></label>
+              <label>Algorithm<input name="algorithm" type="text" value="Face recognition with image processing and matching" /></label>
+              <label>Results<input name="results" type="text" value="Improved speed, reduced manual effort, and more accurate attendance records" /></label>
+              <label>Challenges<input name="challenges" type="text" value="Lighting issues, recognition accuracy, and synchronization" /></label>
+              <label>Future Scope<input name="futureScope" type="text" value="Live tracking, cloud deployment, multi-camera support, mobile app" /></label>
+            </div>
+            <button type="submit" class="primary-btn">Generate Viva Questions</button>
+          </form>
+
+          <div id="projectQuestions" class="question-list compact-list"></div>
+        </section>
+
+        <section id="practicalSection" class="panel">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Practical viva</p>
+              <h3>Select subject and experiment</h3>
+            </div>
+          </div>
+
+          <div class="filter-row">
+            <label>
+              Subject
+              <select id="practicalSubject"></select>
+            </label>
+            <label>
+              Experiment
+              <select id="practicalExperiment"></select>
+            </label>
+          </div>
+
+          <div id="practicalQuestions" class="question-list compact-list"></div>
+        </section>
+
+        <section id="rapidSection" class="panel">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Rapid fire</p>
+              <h3>One question at a time</h3>
+            </div>
+          </div>
+
+          <div class="rapid-controls">
+            <label>
+              Difficulty
+              <select id="rapidDifficulty">
+                <option value="all">All</option>
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+              </select>
+            </label>
+            <button id="startRapidFire" class="primary-btn">Start</button>
+          </div>
+
+          <div id="rapidFireCard" class="rapid-card">
+            <p class="rapid-index">Ready</p>
+            <h4 id="rapidQuestionText">Select a difficulty and start the rapid-fire round.</h4>
+            <div id="rapidAnswerBox" class="rapid-answer hidden"></div>
+            <div class="rapid-actions">
+              <button id="showRapidAnswer" class="secondary-btn">Show Answer</button>
+              <button id="nextRapidQuestion" class="primary-btn">Next Question</button>
+            </div>
+          </div>
+        </section>
+
+        <section id="mockSection" class="panel">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Mock viva</p>
+              <h3>Practice real viva simulation</h3>
+            </div>
+          </div>
+
+          <div class="mock-topbar">
+            <div id="mockSubjects" class="subject-chip-list"></div>
+            <button id="startMockViva" class="primary-btn">Start Mock Viva</button>
+          </div>
+
+          <div class="mock-quick-select">
+            <span class="eyebrow">Quick select</span>
+            <div id="mockQuickSubjects" class="quick-subjects"></div>
+          </div>
+
+          <div id="mockVivaPanel" class="mock-viva-panel hidden">
+            <div class="mock-header">
+              <span id="mockQuestionCounter">Question 1/5</span>
+              <span id="mockDifficultyBadge">Medium</span>
+            </div>
+            <h4 id="mockQuestionText">Question</h4>
+            <textarea id="mockUserAnswer" rows="5" placeholder="Type your answer here..."></textarea>
+            <div class="mock-actions">
+              <button id="submitMockAnswer" class="primary-btn">Submit Answer</button>
+              <button id="skipMockAnswer" class="secondary-btn">Skip</button>
+            </div>
+          </div>
+
+          <div id="mockScoreSummary" class="mock-summary hidden"></div>
+        </section>
+
+        <section id="quizSection" class="panel">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Quiz mode</p>
+              <h3>Test your knowledge</h3>
+            </div>
+          </div>
+
+          <div id="quizSetup" class="quiz-setup">
+            <div class="filter-row">
+              <label>
+                Subject
+                <select id="quizSubject"></select>
+              </label>
+              <label>
+                Difficulty
+                <select id="quizDifficulty">
+                  <option value="all">All Levels</option>
+                  <option value="Easy">Easy</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Hard">Hard</option>
+                </select>
+              </label>
+              <label>
+                Number of questions
+                <select id="quizQuestionCount">
+                  <option value="5">5 questions</option>
+                  <option value="10" selected>10 questions</option>
+                  <option value="15">15 questions</option>
+                </select>
+              </label>
+            </div>
+            <button id="startQuiz" class="primary-btn">Start Quiz</button>
+            <p id="quizSetupMessage" class="quiz-feedback" aria-live="polite"></p>
+          </div>
+
+          <div id="quizPlay" class="quiz-play hidden">
+            <div class="quiz-header">
+              <span id="quizQuestionCounter"></span>
+              <span id="quizDifficultyBadge" class="difficulty-badge"></span>
+            </div>
+            <h4 id="quizQuestionText"></h4>
+            <div id="quizOptions" class="quiz-options"></div>
+            <p id="quizFeedback" class="quiz-feedback" aria-live="polite"></p>
+            <div class="quiz-actions">
+              <button id="submitQuizAnswer" class="primary-btn" disabled>Check Answer</button>
+              <button id="nextQuizQuestion" class="secondary-btn hidden">Next Question</button>
+            </div>
+          </div>
+
+          <div id="quizSummary" class="mock-summary hidden" aria-live="polite"></div>
+        </section>
+
+        <section id="bookmarksSection" class="panel">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Bookmarks</p>
+              <h3>My saved questions</h3>
+            </div>
+          </div>
+
+          <div id="bookmarkList" class="question-list compact-list"></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
